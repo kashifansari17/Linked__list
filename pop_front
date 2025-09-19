@@ -1,4 +1,23 @@
+📝 Logic for pop_front()
+
+Check if the list is empty (head == NULL)
+
+If yes → nothing to delete → just return.
+
+If list has at least one node:
+
+Store the current head in a temporary pointer (temp = head).
+
+Move the head pointer to the next node (head = head->next).
+
+Disconnect the old head (temp->next = NULL) to avoid dangling reference.
+
+Delete the old head (delete temp) to free memory.
+
+
 // Function to pop node from front
+
+
 void pop_front(Node*& head) {
     if (head == NULL) {
         cout << "List is empty. Nothing to pop." << endl;
@@ -10,6 +29,7 @@ void pop_front(Node*& head) {
         delete temp;         // free memory
     }
 }
+
 
 
 
