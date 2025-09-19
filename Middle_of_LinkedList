@@ -1,0 +1,59 @@
+
+
+//brute force approch
+
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = NULL;
+    }
+};
+
+// Function to calculate length
+int length(Node* head) {
+    int count = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+// Function to return middle element index (0-based)
+int getMiddleIndex(Node* head) {
+    int len = length(head);
+
+    if (len == 0) return -1; // empty list
+
+    int midIndex = len / 2;  // 0-based indexing
+    return midIndex;
+}
+
+int main() {
+    // Example: 10 -> 20 -> 30 -> 40 -> 50
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+    head->next->next->next = new Node(40);
+    head->next->next->next->next = new Node(50);
+
+    int len = length(head);
+    int midIdx = getMiddleIndex(head);
+
+    cout << "Length of Linked List: " << len << endl;
+    cout << "Middle element index (0-based): " << midIdx << endl;
+
+    return 0;
+}
+
+//Optimal approach
+
+
+
