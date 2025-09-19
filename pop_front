@@ -1,0 +1,12 @@
+// Function to pop node from front
+void pop_front(Node*& head) {
+    if (head == NULL) {
+        cout << "List is empty. Nothing to pop." << endl;
+        return;
+    } else {
+        Node* temp = head;
+        head = head->next;   // move head forward
+        temp->next = NULL;   // disconnect old head
+        delete temp;         // free memory
+    }
+}
