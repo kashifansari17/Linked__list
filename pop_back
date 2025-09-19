@@ -1,0 +1,146 @@
+📝 Logic for pop_back():
+
+Case 1 → If list is empty (head == NULL), nothing to delete.
+
+Case 2 → If list has only one node, delete it and set head = NULL.
+
+Case 3 → If list has more than one node, traverse to the second last node, make its next = NULL, and delete the last node.
+
+
+
+// Function to pop node from back
+
+
+void pop_back(Node*& head) {
+    if (head == NULL) {
+        cout << "List is empty. Nothing to pop back." << endl;
+        return;
+    }
+
+    // Case: Only one node
+    if (head->next == NULL) {
+        delete head;
+        head = NULL;
+        return;
+    }
+
+    // Traverse to second last node
+    Node* temp = head;
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+
+    // temp->next is last node
+    delete temp->next;
+    temp->next = NULL;
+}
+
+
+
+
+
+//main code to write and use function
+
+
+
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+// Function to add node at end
+void addNode(Node*& head, int value) {
+    Node* newNode = new Node();
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+}
+
+// Function to pop node from front
+void pop_front(Node*& head) {
+    if (head == NULL) {
+        cout << "List is empty. Nothing to pop front." << endl;
+        return;
+    }
+    Node* temp = head;
+    head = head->next;
+    temp->next = NULL;
+    delete temp;
+}
+
+// Function to pop node from back
+void pop_back(Node*& head) {
+    if (head == NULL) {
+        cout << "List is empty. Nothing to pop back." << endl;
+        return;
+    }
+
+    // Case: Only one node
+    if (head->next == NULL) {
+        delete head;
+        head = NULL;
+        return;
+    }
+
+    // Traverse to second last node
+    Node* temp = head;
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+
+    // temp->next is last node
+    delete temp->next;
+    temp->next = NULL;
+}
+
+// Function to display list
+void display(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
+
+int main() {
+    Node* head = NULL;
+
+    addNode(head, 10);
+    addNode(head, 20);
+    addNode(head, 30);
+
+    cout << "Initial list: ";
+    display(head);
+
+    pop_back(head);
+    cout << "After pop_back: ";
+    display(head);
+
+    pop_back(head);
+    cout << "After another pop_back: ";
+    display(head);
+
+    pop_back(head);
+    cout << "After popping last element: ";
+    display(head);
+
+    pop_back(head); // empty list case
+
+    return 0;
+}
+
