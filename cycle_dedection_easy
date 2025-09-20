@@ -1,0 +1,50 @@
+🧠 Approach
+
+We use Floyd’s Cycle Detection Algorithm (Tortoise and Hare):
+
+Maintain two pointers:
+
+Slow → moves one step at a time.
+
+Fast → moves two steps at a time.
+
+If there’s a cycle, both pointers will eventually meet inside the loop.
+
+If fast reaches NULL, then no cycle exists.
+
+✅ Code Implementation (C++)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        if (!head || !head->next) return false;  // Edge case
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while (fast && fast->next) {
+            slow = slow->next;           // Move 1 step
+            fast = fast->next->next;     // Move 2 steps
+
+            if (slow == fast) return true; // Cycle found
+        }
+
+        return false; // No cycle
+    }
+};
+
+📊 Complexity Analysis
+
+Time Complexity: O(n)
+Each pointer at most traverses the list once.
+
+Space Complexity: O(1)
+Only two pointers are used.
