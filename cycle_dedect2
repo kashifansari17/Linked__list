@@ -53,3 +53,156 @@ const auto __=[](){
  return 0;
 }();
 #endif
+
+
+// =============================
+// LEETCODE 142: Linked List Cycle II
+// =============================
+//
+// ✅ Problem:
+// Given the head of a linked list, return the node where the cycle begins.
+// If there is no cycle, return NULL.
+//
+// 🔹 The linked list may contain a loop (cycle), meaning that the next pointer
+// of some node points to a previous node in the list, forming a circle.
+//
+// Example:
+// Input: head = [3,2,0,-4], pos = 1
+// Output: Tail connects to node index 1
+//
+// =============================
+// 🔹 APPROACH: Floyd’s Cycle Detection (Tortoise and Hare Algorithm)
+// =============================
+//
+// Step 1️⃣: Use two pointers — slow and fast.
+//     - slow moves 1 step at a time.
+//     - fast moves 2 steps at a time.
+// If there is a cycle, they will eventually meet inside the loop.
+//
+// Step 2️⃣: Once they meet, it confirms a cycle exists.
+// Reset slow to head, and then move both slow and fast one step at a time.
+// The node where they meet again will be the *starting node of the cycle*.
+//
+// Why this works:
+// Suppose:
+//   - distance from head to start of loop = x
+//   - distance from loop start to meeting point = y
+//   - remaining loop length = z
+//
+// When fast and slow meet:
+//   (distance by slow) = x + y
+//   (distance by fast) = 2(x + y)
+//   Difference = (x + y)
+//   => 2(x + y) - (x + y) = k * (y + z)  [because fast completes k loops more]
+//   => x = k(y + z) - y
+// So, when we reset slow to head and move both one step at a time,
+// they will meet at the start of the loop.
+//
+// =============================
+// 🔹 TIME COMPLEXITY: O(n)
+// 🔹 SPACE COMPLEXITY: O(1)
+// =============================
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// =============================
+// Definition for singly-linked list.
+// =============================
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+class Solution {
+public:
+    ListNode* detectCycle(ListNode* head) {
+        if (!head || !head->next) return NULL; // Edge case: Empty list or 1 node (no cycle)
+
+        ListNode *slow = head, *fast = head;
+        bool hasCycle = false;
+
+        // Step 1: Detect cycle using Floyd’s algorithm
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) {  // Meeting point found
+                hasCycle = true;
+                break;
+            }
+        }
+
+        // Step 2: No cycle found
+        if (!hasCycle) return NULL;
+
+        // Step 3: Find starting node of cycle
+        slow = head; // Reset slow to head
+        while (slow != fast) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+
+        // slow (or fast) is now pointing to the starting node of cycle
+        return slow;
+    }
+};
+
+// =============================
+// Test code to verify logic
+// =============================
+int main() {
+    // Create nodes manually
+    ListNode* head = new ListNode(3);
+    head->next = new ListNode(2);
+    head->next->next = new ListNode(0);
+    head->next->next->next = new ListNode(-4);
+
+    // Create a cycle for testing (tail connects to node index 1)
+    head->next->next->next->next = head->next;
+
+    Solution sol;
+    ListNode* ans = sol.detectCycle(head);
+
+    if (ans)
+        cout << "Cycle starts at node with value: " << ans->val << endl;
+    else
+        cout << "No cycle detected" << endl;
+
+    return 0;
+}
+
+// =============================
+// 🧠 EDGE CASES ANALYSIS
+// =============================
+//
+// 1️⃣ head == NULL
+//    → Empty list, so no cycle → returns NULL.
+//
+// 2️⃣ Only one node (no cycle)
+//    Input: [1]
+//    → head->next = NULL → returns NULL.
+//
+// 3️⃣ Only one node (with cycle)
+//    Input: [1], pos = 0
+//    → head->next = head → cycle starts at node 1.
+//
+// 4️⃣ Multiple nodes, no cycle
+//    Input: [1,2,3,4]
+//    → returns NULL.
+//
+// 5️⃣ Cycle starts at head
+//    Input: [1,2,3], pos = 0
+//    → returns head.
+//
+// 6️⃣ Long list (performance test)
+//    → Algorithm still runs in O(n) and uses O(1) space.
+//
+// =============================
+// ✅ ADDITIONAL NOTES:
+// - If interviewer asks to "remove" the cycle,
+//   track the node before the meeting point and set its next = NULL.
+// - Works for both even and odd length cycles.
+// - This algorithm is 100% optimal (used in most interview solutions).
+// =============================
+
